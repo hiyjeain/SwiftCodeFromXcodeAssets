@@ -68,7 +68,7 @@ This tool will generate code:
 import Foundation
 import UIKit
 
-extension UIColor {
+extension UIImage {
     
     public static let HOME_DEFAULT = UIImage(named: "home_default")
     public static let HOME_SELECTED = UIImage(named: "home_selected")

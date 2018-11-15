@@ -10,7 +10,7 @@ UICOLOR_EXTENSION_PREFIX = """
 extension UIColor {
 """
 UIIMAGE_EXTENSION_PREFIX = """
-extension UIColor {
+extension UIImage {
 
 """
 COMMON_POSTFIX = """
