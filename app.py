@@ -10,10 +10,13 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         path = sys.argv[1]
     asset = Asset(path)
-    builder = SwiftExtensionBuilder(color_name_list=asset.color_name_list, image_name_list=asset.image_name_list)
+    builder = SwiftExtensionBuilder(color_name_list=asset.color_name_list, image_name_list=asset.image_name_list, i18n_string_list=asset.i18n_string_list)
     logging.info(builder.build_uicolor_extension())
     logging.info(builder.build_uiimage_extension())
+    logging.info(builder.build_i18_extension())
     with open("UIColor+Assets.swift", mode="w") as f:
         f.write(builder.build_uicolor_extension())
     with open("UIImage+Assets.swift", mode="w") as f:
         f.write(builder.build_uiimage_extension())
+    with open("NSLocalizedString+Assets.swift", mode="w") as f:
+        f.write(builder.build_i18_extension())

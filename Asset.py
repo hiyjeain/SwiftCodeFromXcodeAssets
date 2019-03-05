@@ -1,5 +1,8 @@
 import os
 import logging
+import re
+
+I18N_PATTERN = re.compile("^\"(?P<name>.*?)\".*;$")
 
 
 class Asset(object):
@@ -8,6 +11,7 @@ class Asset(object):
         self.__path = None
         self.color_name_list = []
         self.image_name_list = []
+        self.i18n_string_list = []
 
         self.__search_assets_folder()
         logging.info(self.color_name_list)
@@ -21,3 +25,11 @@ class Asset(object):
                         self.color_name_list.append(name[:-1 * len(".colorset")])
                     if name.endswith(".imageset"):
                         self.image_name_list.append(name[:-1 * len(".imageset")])
+                for name in files:
+                    if name.endswith(".strings"):
+                        with open(root + "/" + name, mode="r") as f:
+                            for line in f.readlines():
+                                match = I18N_PATTERN.match(line)
+                                if match:
+                                    self.i18n_string_list.append(match.groupdict()['name'])
+

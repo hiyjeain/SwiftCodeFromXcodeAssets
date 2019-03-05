@@ -11,13 +11,15 @@ extension UIColor {
 """
 UIIMAGE_EXTENSION_PREFIX = """
 extension UIImage {
-
 """
-COMMON_POSTFIX = """
-}
+NS_LOCALIZED_STRING_PREFIX = """
+struct LocalizedString {
+"""
+COMMON_POSTFIX = """}
 """
 UICOLOR_ITEM = '    public static let %s = UIColor(named: "%s")\n'
 UIIMAGE_ITEM = '    public static let %s = UIImage(named: "%s")\n'
+NS_LOCALIZED_STRING_ITEM = '    public static let %s = NSLocalizedString("%s", comment: "%s")\n'
 
 
 def fix_name(name):
@@ -25,11 +27,21 @@ def fix_name(name):
 
 
 class SwiftExtensionBuilder(object):
-    def __init__(self, image_name_list=[], color_name_list=[]):
-        self.color_name_list = color_name_list
+    def __init__(self, image_name_list=[], color_name_list=[], i18n_string_list=[]):
+        self.color_name_list = list(set(color_name_list))
         self.color_name_list.sort()
         self.image_name_list = list(set(image_name_list))
         self.image_name_list.sort()
+        self.i18n_string_list = list(set(i18n_string_list))
+        self.i18n_string_list.sort()
+
+    def build_i18_extension(self):
+        content = COMMON_PREFIX
+        content += NS_LOCALIZED_STRING_PREFIX
+        for name in self.i18n_string_list:
+            content += NS_LOCALIZED_STRING_ITEM % (fix_name(name), name, name)
+        content += COMMON_POSTFIX
+        return content
 
     def build_uicolor_extension(self):
         content = COMMON_PREFIX
